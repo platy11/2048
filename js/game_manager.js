@@ -184,6 +184,9 @@ GameManager.prototype.move = function (direction) {
 
           // Update the score
           self.score += merged.value;
+          
+          // Send a tracking event
+          mixpanel.track('Tile merged', {value: merged.value, previousScore: self.score - merged.value})
 
           // The mighty 2048 tile
           if (merged.value === 2048) self.won = true;
