@@ -4,7 +4,17 @@ function GameManager(size, InputManager, Actuator, StorageManager) {
   this.storageManager = new StorageManager;
   this.actuator       = new Actuator;
 
-  this.startTiles     = 2;
+  this.startTiles = function(num) {
+    var random = Math.random();
+    if (random < 0.5) {
+      tiles = 2
+    } else if (random < 0.8) {
+      tiles = 3
+    } else {
+      tiles = 4
+    }
+    return num || tiles;
+  }
 
   this.inputManager.on("move", this.move.bind(this));
   this.inputManager.on("restart", this.restart.bind(this));
@@ -60,7 +70,7 @@ GameManager.prototype.setup = function () {
 
 // Set up the initial tiles to start the game with
 GameManager.prototype.addStartTiles = function () {
-  for (var i = 0; i < this.startTiles; i++) {
+  for (var i = 0; i < this.startTiles(); i++) {
     this.addRandomTile();
   }
 };
@@ -68,7 +78,16 @@ GameManager.prototype.addStartTiles = function () {
 // Adds a tile in a random position
 GameManager.prototype.addRandomTile = function () {
   if (this.grid.cellsAvailable()) {
-    var value = Math.random() < 0.9 ? 2 : 4;
+    var random = Math.random();
+    if (random < 0.75) {
+      value = 2;
+    } else if (random < 0.95) {
+      value = 4;
+    } else {
+      value = 8;
+    }
+
+    // var value = Math.random() < 0.9 ? 2 : 4;
     var tile = new Tile(this.grid.randomAvailableCell(), value);
 
     this.grid.insertTile(tile);
